@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @MappedSuperclass
@@ -15,9 +17,11 @@ public abstract class BaseEntity {
     private Long id;
 
     @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @CreatedDate
     private Date createdDate;
 
     @Column(columnDefinition="TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @LastModifiedDate
     private Date modifiedDate;
 
     public Long getId() {

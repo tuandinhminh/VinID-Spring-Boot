@@ -1,11 +1,13 @@
 package com.example.demo.entity;
 
+import org.hibernate.validator.constraints.Email;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users",uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 public class UsersEntity extends BaseEntity {
     @Column(name = "username")
     private String userName;
@@ -13,7 +15,8 @@ public class UsersEntity extends BaseEntity {
     @Column
     private String password;
 
-    @Column
+    @Column(unique = true)
+    @Email
     private String email;
 
     @OneToMany(mappedBy = "user")
