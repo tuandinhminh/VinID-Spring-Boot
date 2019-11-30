@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.print.Pageable;
 import java.util.ArrayList;
@@ -90,5 +91,20 @@ public class UsersService {
         for(long item: ids) {
             iUsersRepository.deleteById(item);
         }
+    }
+    @Transactional
+    public ResponseEntity<?> testTransaction() throws Exception {
+        List<UsersEntity> list = new ArrayList<>();
+
+        list.add(new UsersEntity("Nguyễn Công Phương", "123123", "phuong1@gmail.com"));
+        list.add(new UsersEntity("Nguyễn Quang Hải", "123123", "hai@gmail.com"));
+
+        for (UsersEntity user : list) {
+            UsersEntity newUser = iUsersRepository.save(user);
+        }
+
+//        int a = 10/0;
+
+        return ResponseEntity.ok("Insert đủ rồi. Vào database kiểm tra đi");
     }
 }

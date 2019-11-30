@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users",uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
+@Table(name = "users",uniqueConstraints = {@UniqueConstraint(columnNames = {"email  "})})
 public class UsersEntity extends BaseEntity {
-    @Column(name = "username")
+    @Column(name = "user_name")
     private String userName;
 
     @Column
@@ -18,6 +18,15 @@ public class UsersEntity extends BaseEntity {
     @Column(unique = true)
     @Email
     private String email;
+
+    public UsersEntity() {
+    }
+
+    public UsersEntity(String userName, String password, @Email String email) {
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
+    }
 
     @OneToMany(mappedBy = "user")
     private List<ReservationsEntity> reservations = new ArrayList<>();

@@ -4,6 +4,7 @@ import com.example.demo.entity.UsersEntity;
 import com.example.demo.service.UsersService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,5 +50,14 @@ public class UsersController {
     @DeleteMapping(value = "/users")
     public void deleteUsers(@RequestBody long[] ids) {
         usersService.deleteUsers(ids);
+    }
+
+    @GetMapping("/test-transaction")
+    public ResponseEntity<?> testTransaction() {
+        try {
+            return usersService.testTransaction();
+        } catch (Exception e) {
+            return ResponseEntity.status (HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi mất rồi");
+        }
     }
 }
