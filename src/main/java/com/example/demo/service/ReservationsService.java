@@ -4,6 +4,7 @@ import com.example.demo.dto.ReservationsDTO;
 import com.example.demo.entity.ReservationsEntity;
 import com.example.demo.entity.UsersEntity;
 import com.example.demo.repository.IReservationsRepository;
+import com.example.demo.repository.IReservedSeatsRepository;
 import com.example.demo.repository.IUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,25 @@ public class ReservationsService {
     private IReservationsRepository iReservationsRepository;
     @Autowired
     private IUsersRepository iUsersRepository;
+    @Autowired
+    private IReservedSeatsRepository iReservedSeatsRepository;
     public List<ReservationsDTO> getReservations(){
         List<ReservationsEntity> reservationsEntities = iReservationsRepository.findAll();
+        List<ReservationsDTO> reservationsDTOS = new ArrayList<>();
+        for (ReservationsEntity item: reservationsEntities){
+            ReservationsDTO reservationsDTO = new ReservationsDTO(
+                    item.getId(),
+                    item.getCreatedDate(),
+                    item.getCreatedDate(),
+                    item.getStatus(),
+                    item.getUser().getId());
+            reservationsDTOS.add(reservationsDTO);
+        }
+        return  reservationsDTOS;
+    }
+
+    public List<ReservationsDTO> getReservationsByUserId(Long user_id){
+        List<ReservationsEntity> reservationsEntities = iReservationsRepository.findOneByUserId(user_id);
         List<ReservationsDTO> reservationsDTOS = new ArrayList<>();
         for (ReservationsEntity item: reservationsEntities){
             ReservationsDTO reservationsDTO = new ReservationsDTO(
@@ -55,7 +73,7 @@ public class ReservationsService {
                 usersEntity.getId());
         return reservationsDTO;
     }
-    public ResponseEntity<?> getReservationById(long id) {
+    public ReservationsDTO getReservationById(long id) {
         ReservationsDTO dto = new ReservationsDTO();
         ReservationsEntity entity = iReservationsRepository.findOneById(id);
         if (entity != null) {
@@ -64,13 +82,14 @@ public class ReservationsService {
             dto.setModifiedDate(entity.getModifiedDate());
             dto.setStatus(entity.getStatus());
             dto.setUser_id(entity.getUser().getId());
-            return ResponseEntity.ok(dto);
+            return dto;
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Đã có lỗi xảy ra");
+        return null;
 
     }
     public void deleteReservations(long[] ids) {
         for(long item: ids) {
+            iReservedSeatsRepository.deleteByReservationId(item);
             iReservationsRepository.deleteById(item);
         }
     }

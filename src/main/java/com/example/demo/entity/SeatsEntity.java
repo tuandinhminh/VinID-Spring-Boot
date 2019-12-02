@@ -10,17 +10,17 @@ import java.util.List;
 @Table(name = "seats")
 public class SeatsEntity extends BaseEntity {
     @Column
-    private int seatRow;
+    private String seatRow;
     @Column
     private int seatNumber;
     @OneToMany(mappedBy = "seat")
     private List<ReservedSeatsEntity> reservedSeats = new ArrayList<>();
 
-    public int getSeatRow() {
+    public String getSeatRow() {
         return seatRow;
     }
 
-    public void setSeatRow(int seatRow) {
+    public void setSeatRow(String seatRow) {
         this.seatRow = seatRow;
     }
 

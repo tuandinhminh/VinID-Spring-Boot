@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -13,7 +14,7 @@ public class ScreeningsEntity extends BaseEntity {
     @JoinColumn(name = "auditorium_id")
     private AuditoriumsEntity auditorium;
     @Column
-    private String startTime;
+    private Date startTime;
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private MoviesEntity movie;
@@ -35,11 +36,11 @@ public class ScreeningsEntity extends BaseEntity {
         this.auditorium = auditorium;
     }
 
-    public String getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 

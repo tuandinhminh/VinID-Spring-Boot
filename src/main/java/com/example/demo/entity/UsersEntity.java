@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users",uniqueConstraints = {@UniqueConstraint(columnNames = {"email  "})})
+@Table(name = "users",uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 public class UsersEntity extends BaseEntity {
     @Column(name = "user_name")
     private String userName;

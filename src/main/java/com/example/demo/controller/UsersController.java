@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 import com.example.demo.dto.UsersDTO;
 import com.example.demo.entity.UsersEntity;
+import com.example.demo.service.ReservationsService;
 import com.example.demo.service.UsersService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,8 @@ import java.util.List;
 public class UsersController {
     @Autowired
     private UsersService usersService;
-
+    @Autowired
+    private ReservationsService reservationsService;
     @ApiOperation(value = "Lấy danh sách user")
     @GetMapping(value = "/users")
     public ResponseEntity<?> getUsers(){
@@ -37,7 +39,9 @@ public class UsersController {
     @ApiOperation(value = "Lấy thông tin user theo id")
     @GetMapping(value = "/users/{id}")
     public UsersDTO getUserById(@PathVariable("id") long id) {
-        return usersService.getUserById(id);
+        UsersDTO dto = usersService.getUserById(id);
+        dto.setReservations(reservationsService.getReservationsByUserId(id));
+        return dto;
     }
 
     @ApiOperation(value = "Lấy thông tin user theo email")
