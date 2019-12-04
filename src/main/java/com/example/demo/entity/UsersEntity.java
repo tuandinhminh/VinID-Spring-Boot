@@ -19,13 +19,17 @@ public class UsersEntity extends BaseEntity {
     @Email
     private String email;
 
+    @Column
+    private String role;
+
     public UsersEntity() {
     }
 
-    public UsersEntity(String userName, String password, @Email String email) {
+    public UsersEntity(String userName, String password, @Email String email, String role) {
         this.userName = userName;
         this.password = password;
         this.email = email;
+        this.role = role;
     }
 
     @OneToMany(mappedBy = "user")
@@ -52,6 +56,14 @@ public class UsersEntity extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public List<ReservationsEntity> getReservations() {

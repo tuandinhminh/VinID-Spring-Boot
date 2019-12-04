@@ -15,6 +15,8 @@ public class MoviesEntity extends BaseEntity{
     private String image;
     @Column
     private String description;
+    @Column
+    private String status;
     @OneToMany(mappedBy = "movie")
     private List<ScreeningsEntity> screenings = new ArrayList<>();
 
@@ -56,5 +58,13 @@ public class MoviesEntity extends BaseEntity{
 
     public void setScreenings(List<ScreeningsEntity> screenings) {
         this.screenings = screenings;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

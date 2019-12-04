@@ -1,5 +1,8 @@
 package com.example.demo.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +18,7 @@ public class ReservationsEntity extends BaseEntity{
     private UsersEntity user;
 
     @OneToMany(mappedBy = "reservation")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ReservedSeatsEntity> reservedSeats = new ArrayList<>();
 
     public String getStatus() {

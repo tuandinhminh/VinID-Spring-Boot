@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +20,7 @@ public class ReservationsController {
     private ReservationsService reservationsService;
     @Autowired
     private ReservedSeatsService reservedSeatsService;
-
+    @RolesAllowed("ROLE_ADMIN")
     @ApiOperation(value = "Lấy danh sách Reservation")
     @GetMapping(value = "/reservations")
     public List<ReservationsDTO> getReservations(){

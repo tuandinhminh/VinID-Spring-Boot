@@ -7,6 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +20,10 @@ import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 @Service
-public class UsersService {
+public class UsersService implements UserDetailsService {
     @Autowired
     private IUsersRepository iUsersRepository;
-    public ResponseEntity<?> getUsers(){
+    public List<UsersDTO> getUsers(){
         List<UsersEntity> entities = iUsersRepository.findAll();
         List<UsersDTO> dtos = new ArrayList<>();
         for(UsersEntity item: entities){
@@ -31,7 +37,7 @@ public class UsersService {
             );
             dtos.add(dto);
         }
-        return  ResponseEntity.ok(dtos);
+        return  dtos;
     }
     public UsersDTO getUserById(long id) {
         UsersEntity entity = iUsersRepository.findOneById(id);
@@ -96,8 +102,8 @@ public class UsersService {
     public ResponseEntity<?> testTransaction() throws Exception {
         List<UsersEntity> list = new ArrayList<>();
 
-        list.add(new UsersEntity("Nguyễn Công Phương", "123123", "phuong1@gmail.com"));
-        list.add(new UsersEntity("Nguyễn Quang Hải", "123123", "hai@gmail.com"));
+        list.add(new UsersEntity("Nguyễn Công Phương", "123123", "phuong1@gmail.com","user"));
+        list.add(new UsersEntity("Nguyễn Quang Hải", "123123", "hai@gmail.com","user"));
 
         for (UsersEntity user : list) {
             UsersEntity newUser = iUsersRepository.save(user);
@@ -106,5 +112,15 @@ public class UsersService {
 //        int a = 10/0;
 
         return ResponseEntity.ok("Insert đủ rồi. Vào database kiểm tra đi");
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if ("whoami".equals(username)) {
+            String password = new BCryptPasswordEncoder().encode("123456");
+            return User.withUsername("whoami").password(password).roles("USER").build();
+        } else {
+            throw new UsernameNotFoundException(username);
+        }
     }
 }

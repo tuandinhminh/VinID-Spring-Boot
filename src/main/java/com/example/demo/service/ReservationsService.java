@@ -89,7 +89,6 @@ public class ReservationsService {
     }
     public void deleteReservations(long[] ids) {
         for(long item: ids) {
-            iReservedSeatsRepository.deleteByReservationId(item);
             iReservationsRepository.deleteById(item);
         }
     }
