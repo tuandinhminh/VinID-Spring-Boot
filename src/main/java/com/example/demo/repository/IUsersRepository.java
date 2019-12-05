@@ -10,5 +10,9 @@ import java.util.List;
 public interface IUsersRepository extends JpaRepository<UsersEntity,Long> {
     UsersEntity findOneById(long id);
     @Query(nativeQuery = true, value = "SELECT * FROM users WHERE email LIKE %:email%")
-    List<UsersEntity> findOneByEmail(@Param("email") String email, Pageable pageable);
+    List<UsersEntity> findAllByEmail(@Param("email") String email, Pageable pageable);
+    @Query(nativeQuery = true, value = "SELECT * FROM users WHERE user_name LIKE :user_name")
+    UsersEntity findOneByUserName(@Param("user_name") String name);
+    @Query(nativeQuery = true, value = "SELECT * FROM users WHERE email = :email")
+    UsersEntity findOneByEmail(@Param("email") String email);
 }

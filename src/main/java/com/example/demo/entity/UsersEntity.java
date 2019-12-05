@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "users",uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 public class UsersEntity extends BaseEntity {
-    @Column(name = "user_name")
+    @Column(name = "user_name",unique = true)
     private String userName;
 
     @Column

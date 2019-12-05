@@ -20,7 +20,7 @@ public class ReservationsController {
     private ReservationsService reservationsService;
     @Autowired
     private ReservedSeatsService reservedSeatsService;
-    @RolesAllowed("ROLE_ADMIN")
+//    @RolesAllowed("ROLE_ADMIN")
     @ApiOperation(value = "Lấy danh sách Reservation")
     @GetMapping(value = "/reservations")
     public List<ReservationsDTO> getReservations(){

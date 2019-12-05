@@ -12,17 +12,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 @Service
 public class UsersService implements UserDetailsService {
     @Autowired
     private IUsersRepository iUsersRepository;
+
     public List<UsersDTO> getUsers(){
         List<UsersEntity> entities = iUsersRepository.findAll();
         List<UsersDTO> dtos = new ArrayList<>();
@@ -52,7 +51,7 @@ public class UsersService implements UserDetailsService {
         return dto;
     }
     public List<UsersDTO> getUserByEmail(String email) {
-        List<UsersEntity> entities = iUsersRepository.findOneByEmail(email,
+        List<UsersEntity> entities = iUsersRepository.findAllByEmail(email,
                 PageRequest.of(0,3, Sort.by("id").descending()));
         List<UsersDTO> dtos = new ArrayList<>();
         for (UsersEntity entity : entities) {
@@ -68,8 +67,19 @@ public class UsersService implements UserDetailsService {
         }
         return dtos;
     }
+
+    public UsersDTO getOneByUserName(String userName){
+        UsersEntity entity = iUsersRepository.findOneByUserName(userName);
+        return new UsersDTO(entity.getId(),
+                entity.getCreatedDate(),
+                entity.getModifiedDate(),
+                entity.getUserName(),
+                entity.getEmail(),
+                entity.getPassword());
+    }
+
     public UsersDTO saveUser(UsersDTO model) {
-        UsersEntity entity = new UsersEntity();;
+        UsersEntity entity = new UsersEntity();
         if (model.getId() != null){
             entity = iUsersRepository.findOneById(model.getId());
             entity.setUserName(model.getUsername());
@@ -115,12 +125,20 @@ public class UsersService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if ("whoami".equals(username)) {
-            String password = new BCryptPasswordEncoder().encode("123456");
-            return User.withUsername("whoami").password(password).roles("USER").build();
-        } else {
-            throw new UsernameNotFoundException(username);
-        }
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        UsersEntity item = iUsersRepository.findOneByUserName(userName);
+            if (item.getUserName().equals(userName)) {
+                String password = new BCryptPasswordEncoder().encode(item.getPassword());
+                return User.withUsername(item.getUserName()).password(password).
+                        roles(item.getRole()).build();
+            } else {
+                throw new UsernameNotFoundException(userName);
+            }
+//        if ("whoami".equals(username)) {
+//            String password = new BCryptPasswordEncoder().encode("123456");
+//            return User.withUsername("whoami").password(password).roles("USER").build();
+//        } else {
+//            throw new UsernameNotFoundException(username);
+//        }
     }
 }
