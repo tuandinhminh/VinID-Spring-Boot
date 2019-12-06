@@ -57,7 +57,7 @@ public class UsersController {
         model.setId(id);
         return usersService.saveUser(model);
     }
-    @RolesAllowed({"ROLE_ADMIN","ROLE_USER"})
+    @RolesAllowed("ROLE_ADMIN")
     @ApiOperation(value = "Lấy thông tin user theo id")
     @GetMapping(value = "/users/{id}")
     public ResponseEntity<?> getUserById(@PathVariable("id") long id) {
@@ -65,7 +65,7 @@ public class UsersController {
             UsersDTO dto = usersService.getUserById(id);
             List<ReservationsDTO> dtos = reservationsService.getReservationsByUserId(id);
             for(ReservationsDTO item:dtos){
-                item.setReservedSeatsDTOS(reservedSeatsService.getReservedSeatsByReservationsId(item.getId()));
+                item.setReservedSeats(reservedSeatsService.getReservedSeatsByReservationsId(item.getId()));
             }
             dto.setReservations(dtos);
             return ResponseEntity.ok(dto);
@@ -95,7 +95,7 @@ public class UsersController {
             return ResponseEntity.status (HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi mất rồi");
         }
     }
-
+    @ApiOperation(value = "Đăng nhập")
     @PostMapping(value = "/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest request)
         throws Exception{

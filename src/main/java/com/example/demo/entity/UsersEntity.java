@@ -9,17 +9,17 @@ import java.util.List;
 @Entity
 @Table(name = "users",uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 public class UsersEntity extends BaseEntity {
-    @Column(name = "user_name",unique = true)
+    @Column(name = "user_name",unique = true, nullable=false)
     private String userName;
 
-    @Column
+    @Column(nullable=false)
     private String password;
 
     @Column(unique = true)
     @Email
     private String email;
 
-    @Column
+    @Column(nullable=false)
     private String role;
 
     public UsersEntity() {

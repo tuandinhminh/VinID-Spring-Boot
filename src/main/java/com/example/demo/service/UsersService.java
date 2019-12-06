@@ -75,7 +75,9 @@ public class UsersService implements UserDetailsService {
                 entity.getModifiedDate(),
                 entity.getUserName(),
                 entity.getEmail(),
-                entity.getPassword());
+                entity.getPassword(),
+                entity.getRole()
+        );
     }
 
     public UsersDTO saveUser(UsersDTO model) {
@@ -85,10 +87,12 @@ public class UsersService implements UserDetailsService {
             entity.setUserName(model.getUsername());
             entity.setEmail(model.getEmail());
             entity.setPassword(model.getPassword());
+            entity.setRole("USER");
         } else{
             entity.setUserName(model.getUsername());
             entity.setEmail(model.getEmail());
             entity.setPassword(model.getPassword());
+            entity.setRole("USER");
         }
         entity =iUsersRepository.save(entity);
         UsersDTO dto = new UsersDTO(
@@ -97,7 +101,8 @@ public class UsersService implements UserDetailsService {
                 entity.getModifiedDate(),
                 entity.getUserName(),
                 entity.getEmail(),
-                entity.getPassword()
+                entity.getPassword(),
+                entity.getRole()
                 );
         return dto;
     }

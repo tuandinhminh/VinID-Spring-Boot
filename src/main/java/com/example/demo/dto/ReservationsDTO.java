@@ -7,7 +7,7 @@ import java.util.List;
 public class ReservationsDTO extends BaseDTO{
     private String status;
     private Long user_id;
-    List<ReservedSeatsDTO> reservedSeatsDTOS = new ArrayList<>();
+    List<ReservedSeatsDTO> reservedSeats = new ArrayList<>();
     public ReservationsDTO() {
     }
 
@@ -33,11 +33,11 @@ public class ReservationsDTO extends BaseDTO{
         this.user_id = user_id;
     }
 
-    public List<ReservedSeatsDTO> getReservedSeatsDTOS() {
-        return reservedSeatsDTOS;
+    public List<ReservedSeatsDTO> getReservedSeats() {
+        return reservedSeats;
     }
 
-    public void setReservedSeatsDTOS(List<ReservedSeatsDTO> reservedSeatsDTOS) {
-        this.reservedSeatsDTOS = reservedSeatsDTOS;
+    public void setReservedSeats(List<ReservedSeatsDTO> reservedSeats) {
+        this.reservedSeats = reservedSeats;
     }
 }

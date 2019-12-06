@@ -20,7 +20,8 @@ public class ReservationsController {
     private ReservationsService reservationsService;
     @Autowired
     private ReservedSeatsService reservedSeatsService;
-//    @RolesAllowed("ROLE_ADMIN")
+
+    @RolesAllowed("ROLE_USER")
     @ApiOperation(value = "Lấy danh sách Reservation")
     @GetMapping(value = "/reservations")
     public List<ReservationsDTO> getReservations(){
@@ -31,7 +32,7 @@ public class ReservationsController {
     @GetMapping(value = "/reservations/{id}")
     public ReservationsDTO getReservationById(@PathVariable("id") Long id) {
         ReservationsDTO dto = reservationsService.getReservationById(id);
-        dto.setReservedSeatsDTOS(reservedSeatsService.getReservedSeatsByReservationsId(id));
+        dto.setReservedSeats(reservedSeatsService.getReservedSeatsByReservationsId(id));
         return dto;
     }
 
@@ -47,8 +48,6 @@ public class ReservationsController {
         model.setId(id);
         return reservationsService.saveReservation(model);
     }
-
-
 
     @ApiOperation(value = "Xóa Reservation")
     @DeleteMapping(value = "/reservations")
