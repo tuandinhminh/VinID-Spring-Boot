@@ -7,7 +7,7 @@ import java.util.List;
 @Entity
 @Table(name = "movies")
 public class MoviesEntity extends BaseEntity{
-    @Column
+    @Column(unique = true, nullable=false)
     private String title;
     @Column
     private int durationMin;

@@ -7,9 +7,11 @@ import com.example.demo.service.ReservedSeatsService;
 import com.example.demo.service.ScreeningsService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
@@ -34,5 +36,32 @@ public class MoviesController {
         }
         return dtos;
     }
+    @RolesAllowed("ROLE_ADMIN")
+    @ApiOperation(value = "them phim")
+    @PostMapping(value = "/movies")
+    public ResponseEntity<?> postMovie(@RequestBody MoviesDTO dto){
+        if (moviesService.saveMovie(dto) != null){
+            return ResponseEntity.ok(moviesService.saveMovie(dto));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("co loi xay ra");
+    }
 
+    @RolesAllowed("ROLE_ADMIN")
+    @ApiOperation(value = "sua phim")
+    @PutMapping(value = "/movies/{id}")
+    public  ResponseEntity<?> putMovie(@RequestBody MoviesDTO dto,@PathVariable long id){
+        dto.setId(id);
+        if (moviesService.saveMovie(dto) != null){
+            return ResponseEntity.ok(moviesService.saveMovie(dto));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("co loi xay ra");
+    }
+
+    @RolesAllowed("ROLE_ADMIN")
+    @ApiOperation(value = "xoa phim")
+    @DeleteMapping(value = "/movies")
+    public ResponseEntity<?> deleteMovie(@RequestBody long[] ids){
+        moviesService.deleteMovies(ids);
+        return ResponseEntity.status(HttpStatus.OK).body("xoa thanh cong");
+    }
 }

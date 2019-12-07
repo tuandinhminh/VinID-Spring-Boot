@@ -31,4 +31,40 @@ public class MoviesService {
         }
         return  dtos;
     }
+
+    public MoviesDTO saveMovie(MoviesDTO model){
+        MoviesEntity entity = new MoviesEntity();
+        if (model.getId() != null){
+            entity = iMoviesRepository.findOneById(model.getId());
+            entity.setDescription(model.getDescription());
+            entity.setDurationMin(model.getDuration_min());
+            entity.setImage(model.getImage());
+            entity.setStatus(model.getStatus());
+            entity.setTitle(model.getTitle());
+        } else{
+            entity.setDescription(model.getDescription());
+            entity.setDurationMin(model.getDuration_min());
+            entity.setImage(model.getImage());
+            entity.setStatus(model.getStatus());
+            entity.setTitle(model.getTitle());
+        }
+        entity =iMoviesRepository.save(entity);
+        MoviesDTO dto = new MoviesDTO(
+                entity.getId(),
+                entity.getCreatedDate(),
+                entity.getModifiedDate(),
+                entity.getDescription(),
+                entity.getDurationMin(),
+                entity.getImage(),
+                entity.getStatus(),
+                entity.getTitle()
+        );
+        return dto;
+    }
+
+    public void deleteMovies(long[] ids) {
+        for(long item: ids) {
+            iMoviesRepository.deleteById(item);
+        }
+    }
 }
