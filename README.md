@@ -13,6 +13,6 @@
   + docker run -d -p 3308:3306 --name=docker-mysql --env="MYSQL_ROOT_PASSWORD=root" --env="MYSQL_PASSWORD=root" --env="MYSQL_DATABASE=cinema" mysql:8.0.13
   + docker start cinema 
 ### Database
-https://imgur.com/a/FEWbsGY
+https://dbdiagram.io/d/5dddf860edf08a25543e6ab9
 ## 4 - Các việc cần hoàn thiện
  - Các chức năng của admin
