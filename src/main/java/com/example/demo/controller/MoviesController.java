@@ -2,18 +2,22 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.MoviesDTO;
 import com.example.demo.dto.ScreeningsDTO;
+import com.example.demo.form.Response;
 import com.example.demo.service.MoviesService;
 import com.example.demo.service.ReservedSeatsService;
 import com.example.demo.service.ScreeningsService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.Collection;
 import java.util.List;
-
+@Api(description = "API yeu cau quyen ADMIN")
 @RestController
 public class MoviesController {
     @Autowired
@@ -24,7 +28,7 @@ public class MoviesController {
     private ReservedSeatsService reservedSeatsService;
     @ApiOperation(value = "get movie va xuat chieu tuong ung")
     @GetMapping(value = "/movies")
-    public List<MoviesDTO> getMovies(){
+    public ResponseEntity<?> getMovies(){
         List<MoviesDTO> dtos = moviesService.getMovies();
         for(MoviesDTO item: dtos){
             List<ScreeningsDTO> dtos1 = screeningsService.getScreeningsByMovieId(item.getId());
@@ -34,14 +38,15 @@ public class MoviesController {
             item.setScreenings(dtos1);
 
         }
-        return dtos;
+        return ResponseEntity.ok(new Response(dtos.size(),dtos));
     }
     @RolesAllowed("ROLE_ADMIN")
     @ApiOperation(value = "them phim")
     @PostMapping(value = "/movies")
     public ResponseEntity<?> postMovie(@RequestBody MoviesDTO dto){
-        if (moviesService.saveMovie(dto) != null){
-            return ResponseEntity.ok(moviesService.saveMovie(dto));
+        MoviesDTO dto1 = moviesService.saveMovie(dto);
+        if (dto1 != null){
+            return ResponseEntity.ok(dto1);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("co loi xay ra");
     }

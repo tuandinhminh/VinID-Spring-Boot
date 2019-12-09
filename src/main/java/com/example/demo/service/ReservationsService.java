@@ -57,11 +57,9 @@ public class ReservationsService {
 
         if (model.getId() != null){
             reservationsEntity = iReservationsRepository.findOneById(model.getId());
-            reservationsEntity.setStatus(model.getStatus());
         }
-        else {
-            reservationsEntity.setStatus(model.getStatus());
-        }
+        reservationsEntity.setStatus(model.getStatus());
+
         UsersEntity usersEntity = iUsersRepository.findOneById(model.getUser_id());
         reservationsEntity.setUser(usersEntity);
         reservationsEntity = iReservationsRepository.save(reservationsEntity);

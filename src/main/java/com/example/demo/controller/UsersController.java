@@ -14,10 +14,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -40,7 +46,7 @@ public class UsersController {
             return ResponseEntity.ok(usersService.getUsers());
         }
         catch (Exception e){
-            return ResponseEntity.status (HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi mất rồi");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi mất rồi");
         }
 
     }
@@ -109,6 +115,15 @@ public class UsersController {
         final String jwt = "Bearer " + jwtUtil.generateToken(userDetails);
         UsersDTO dto = usersService.getOneByUserName(request.getUsername());
         return ResponseEntity.ok(new AuthenticationResponse(0L,"thanh cong",dto,jwt));
+    }
+
+    @GetMapping("/logout-controller")
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "Dang xuat thanh cong";
     }
 
 }

@@ -10,6 +10,10 @@ public class BaseDTO {
     public BaseDTO() {
     }
 
+    public BaseDTO(Long id) {
+        this.id = id;
+    }
+
     public BaseDTO(Long id, Date createdDate, Date modifiedDate) {
         this.id = id;
         this.createdDate = createdDate;

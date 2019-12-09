@@ -36,18 +36,13 @@ public class MoviesService {
         MoviesEntity entity = new MoviesEntity();
         if (model.getId() != null){
             entity = iMoviesRepository.findOneById(model.getId());
-            entity.setDescription(model.getDescription());
-            entity.setDurationMin(model.getDuration_min());
-            entity.setImage(model.getImage());
-            entity.setStatus(model.getStatus());
-            entity.setTitle(model.getTitle());
-        } else{
-            entity.setDescription(model.getDescription());
-            entity.setDurationMin(model.getDuration_min());
-            entity.setImage(model.getImage());
-            entity.setStatus(model.getStatus());
-            entity.setTitle(model.getTitle());
         }
+        entity.setDescription(model.getDescription());
+        entity.setDurationMin(model.getDuration_min());
+        entity.setImage(model.getImage());
+        entity.setStatus(model.getStatus());
+        entity.setTitle(model.getTitle());
+
         entity =iMoviesRepository.save(entity);
         MoviesDTO dto = new MoviesDTO(
                 entity.getId(),

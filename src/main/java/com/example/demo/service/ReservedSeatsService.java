@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.ReservedSeatsDTO;
-import com.example.demo.entity.ReservedSeatsEntity;
+import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,27 +75,32 @@ public class ReservedSeatsService {
         return  dtos;
     }
 
-//    public ReservedSeatsDTO saveReservation(ReservedSeatsDTO model) {
-//        ReservedSeatsEntity ReservedSeatsEntity = new ReservedSeatsEntity();
-//
-//        if (model.getId() != null){
-//            ReservedSeatsEntity = iReservedSeatsRepository.findOneById(model.getId());
-//            ReservedSeatsEntity.setStatus(model.getStatus());
-//        }
-//        else {
-//            ReservedSeatsEntity.setStatus(model.getStatus());
-//        }
-//        UsersEntity usersEntity = iUsersRepository.findOneById(model.getUser_id());
-//        ReservedSeatsEntity.setUser(usersEntity);
-//        ReservedSeatsEntity = iReservedSeatsRepository.save(ReservedSeatsEntity);
-//        ReservedSeatsDTO ReservedSeatsDTO = new ReservedSeatsDTO(
-//                ReservedSeatsEntity.getId(),
-//                ReservedSeatsEntity.getCreatedDate(),
-//                ReservedSeatsEntity.getModifiedDate(),
-//                ReservedSeatsEntity.getStatus(),
-//                usersEntity.getId());
-//        return ReservedSeatsDTO;
-//    }
+    public ReservedSeatsDTO saveReservedSeat(ReservedSeatsDTO model) {
+        ReservedSeatsEntity entity = new ReservedSeatsEntity();
+
+        if (model.getId() != null){
+            entity = iReservedSeatsRepository.findOneById(model.getId());
+        }
+        ReservationsEntity reservationsEntity = iReservationsRepository.findOneById(model.getReservation_id());
+        entity.setReservation(reservationsEntity);
+        ScreeningsEntity screeningsEntity = iScreeningsRepository.findOneById(model.getScreening_id());
+        entity.setScreening(screeningsEntity);
+        SeatsEntity seatsEntity = iSeatsRepository.findOneById(model.getSeat_id());
+        entity.setSeat(seatsEntity);
+        SeatTypesEntity seatTypesEntity = iSeatTypesRepository.findOneById(model.getType_id());
+        entity.setSeatType(seatTypesEntity);
+        entity = iReservedSeatsRepository.save(entity);
+        ReservedSeatsDTO dto = new ReservedSeatsDTO(
+                entity.getId(),
+                entity.getCreatedDate(),
+                entity.getModifiedDate(),
+                reservationsEntity.getId(),
+                screeningsEntity.getId(),
+                seatsEntity.getId(),
+                seatTypesEntity.getId()
+            );
+        return dto;
+    }
 
     public void deleteReservedSeats(long[] ids) {
         for(long item: ids) {

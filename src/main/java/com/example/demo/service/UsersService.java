@@ -46,7 +46,8 @@ public class UsersService implements UserDetailsService {
                 entity.getModifiedDate(),
                 entity.getUserName(),
                 entity.getEmail(),
-                entity.getPassword()
+                entity.getPassword(),
+                entity.getRole()
         );
         return dto;
     }
@@ -84,16 +85,12 @@ public class UsersService implements UserDetailsService {
         UsersEntity entity = new UsersEntity();
         if (model.getId() != null){
             entity = iUsersRepository.findOneById(model.getId());
-            entity.setUserName(model.getUsername());
-            entity.setEmail(model.getEmail());
-            entity.setPassword(model.getPassword());
-            entity.setRole("USER");
-        } else{
-            entity.setUserName(model.getUsername());
-            entity.setEmail(model.getEmail());
-            entity.setPassword(model.getPassword());
-            entity.setRole("USER");
         }
+        entity.setUserName(model.getUsername());
+        entity.setEmail(model.getEmail());
+        entity.setPassword(model.getPassword());
+        entity.setRole("USER");
+
         entity =iUsersRepository.save(entity);
         UsersDTO dto = new UsersDTO(
                 entity.getId(),

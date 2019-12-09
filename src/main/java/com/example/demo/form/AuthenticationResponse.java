@@ -4,17 +4,17 @@ public class AuthenticationResponse<T> {
 
     private Long code;
     private String message;
-    private T data;
+    private T dataUser;
     private final String jwt;
 
     public AuthenticationResponse(String jwt) {
         this.jwt = jwt;
     }
 
-    public AuthenticationResponse(Long code, String message, T data, String jwt) {
+    public AuthenticationResponse(Long code, String message, T dataUser, String jwt) {
         this.code = code;
         this.message = message;
-        this.data = data;
+        this.dataUser = dataUser;
         this.jwt = jwt;
     }
 
@@ -34,12 +34,12 @@ public class AuthenticationResponse<T> {
         this.message = message;
     }
 
-    public T getData() {
-        return data;
+    public T getDataUser() {
+        return dataUser;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setDataUser(T dataUser) {
+        this.dataUser = dataUser;
     }
 
     public String getJwt() {
