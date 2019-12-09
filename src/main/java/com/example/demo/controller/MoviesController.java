@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import java.util.Collection;
 import java.util.List;
-@Api(description = "API yeu cau quyen ADMIN")
+@Api(description = "API yeu cau quyen ADMIN tru API get")
 @RestController
 public class MoviesController {
     @Autowired

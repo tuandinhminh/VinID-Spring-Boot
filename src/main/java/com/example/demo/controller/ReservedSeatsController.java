@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.Exception.ScreeningAmountException;
 import com.example.demo.dto.ReservedSeatsDTO;
 import com.example.demo.service.ReservedSeatsService;
 import com.example.demo.service.ScreeningsService;
@@ -32,8 +33,8 @@ public class ReservedSeatsController {
             screeningsService.updateAmount(dto.getScreening_id());
             return ResponseEntity.ok(dto1);
 
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("co loi xay ra");
+        }catch (ScreeningAmountException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("co loi xay ra: " + e.getMessage());
         }
     }
 

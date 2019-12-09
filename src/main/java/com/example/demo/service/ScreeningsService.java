@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.Exception.ScreeningAmountException;
 import com.example.demo.dto.ScreeningsDTO;
 import com.example.demo.dto.SeatsDTO;
 import com.example.demo.entity.*;
@@ -127,9 +128,16 @@ public class ScreeningsService {
 
     public void updateAmount(Long screening_id) {
         ScreeningsEntity entity = iScreeningsRepository.findOneById(screening_id);
-        int amount = entity.getAmount()-1;
-        entity.setAmount(amount);
-        entity = iScreeningsRepository.save(entity);
+        int amount = entity.getAmount();
+        if (amount >= 1){
+            amount-=1;
+            entity.setAmount(amount);
+            entity = iScreeningsRepository.save(entity);
+        }
+        else
+        {
+            throw new ScreeningAmountException();
+        }
     }
 
     public ResponseSeats getAllSeats(long id) {
