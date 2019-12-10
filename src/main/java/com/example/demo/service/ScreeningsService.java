@@ -31,7 +31,11 @@ public class ScreeningsService {
 
     Calendar calendar = Calendar.getInstance();
     public List<ScreeningsDTO> getScreeningsByMovieId(Long id){
-        List<ScreeningsEntity> entities = iScreeningsRepository.findAllByMovieId(id);
+        Date _date = new Date();
+        String _pattern = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat _simpledateformat = new SimpleDateFormat(_pattern);
+        String _current = _simpledateformat.format(_date);
+        List<ScreeningsEntity> entities = iScreeningsRepository.findAllByMovieId(id,_current);
         List<ScreeningsDTO> dtos = new ArrayList<>();
         for (ScreeningsEntity item: entities){
             calendar.setTime(item.getStartTime());
@@ -94,7 +98,6 @@ public class ScreeningsService {
         String pattern = "HH:mm dd-MM-yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         Date date = simpleDateFormat.parse(model.getStart_time()+" "+model.getStart_date());
-        Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.HOUR_OF_DAY,7);
         entity.setStartTime(calendar.getTime());

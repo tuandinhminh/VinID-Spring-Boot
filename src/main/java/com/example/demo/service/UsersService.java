@@ -32,7 +32,8 @@ public class UsersService implements UserDetailsService {
                     item.getModifiedDate(),
                     item.getUserName(),
                     item.getEmail(),
-                    item.getPassword()
+                    item.getPassword(),
+                    item.getRole()
             );
             dtos.add(dto);
         }
@@ -62,7 +63,8 @@ public class UsersService implements UserDetailsService {
                     entity.getModifiedDate(),
                     entity.getUserName(),
                     entity.getEmail(),
-                    entity.getPassword()
+                    entity.getPassword(),
+                    entity.getRole()
             );
             dtos.add(dto);
         }

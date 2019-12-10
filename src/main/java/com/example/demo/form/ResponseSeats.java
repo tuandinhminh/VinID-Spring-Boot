@@ -5,7 +5,7 @@ import com.example.demo.dto.SeatsDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResponseSeats<T> {
+public class ResponseSeats {
     private Long screening_id;
     List<SeatsDTO> seats = new ArrayList<>();
 

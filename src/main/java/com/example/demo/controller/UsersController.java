@@ -56,12 +56,13 @@ public class UsersController {
     public UsersDTO createUser(@RequestBody UsersDTO model) {
         return usersService.saveUser(model);
     }
-
+    @RolesAllowed("ROLE_ADMIN")
     @ApiOperation(value = "Sửa thông tin user")
     @PutMapping(value = "/users/{id}")
-    public UsersDTO updateUser(@RequestBody UsersDTO model, @PathVariable("id") Long id) {
+    public ResponseEntity<?> updateUser(@RequestBody UsersDTO model, @PathVariable("id") Long id) {
         model.setId(id);
-        return usersService.saveUser(model);
+//        return usersService.saveUser(model);
+        return ResponseEntity.ok(usersService.saveUser(model));
     }
     @RolesAllowed("ROLE_ADMIN")
     @ApiOperation(value = "Lấy thông tin user theo id")
@@ -117,11 +118,12 @@ public class UsersController {
         return ResponseEntity.ok(new AuthenticationResponse(0L,"thanh cong",dto,jwt));
     }
 
-    @GetMapping("/logout-controller")
-    public String logoutPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @GetMapping("/log-out")
+    public String logoutPage(HttpServletRequest request,HttpServletResponse response) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
+            return auth.getName() +" "+ auth.getAuthorities() + " " + auth.isAuthenticated();
         }
         return "Dang xuat thanh cong";
     }

@@ -13,7 +13,7 @@ public class MoviesEntity extends BaseEntity{
     private int durationMin;
     @Column
     private String image;
-    @Column
+    @Column(length = 2000)
     private String description;
     @Column
     private String status;

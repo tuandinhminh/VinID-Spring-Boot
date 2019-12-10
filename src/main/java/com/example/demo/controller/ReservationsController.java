@@ -21,7 +21,6 @@ public class ReservationsController {
     @Autowired
     private ReservedSeatsService reservedSeatsService;
 
-    @RolesAllowed("ROLE_USER")
     @ApiOperation(value = "Lấy danh sách Reservation")
     @GetMapping(value = "/reservations")
     public List<ReservationsDTO> getReservations(){
